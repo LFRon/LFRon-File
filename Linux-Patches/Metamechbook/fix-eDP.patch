@@ -1,0 +1,25 @@
+From: LFRon <ronforever@outlook.com>
+Date: Fri, 5 Dec 2025 20:19:26 +0800
+Subject: Fix eDP connect detector for Metaphyuni MetamechBook 7840HS 240Hz model
+
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_origin.c	2025-12-01 06:42:10.000000000 +0800
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c	2025-12-05 23:34:32.613381694 +0800
+@@ -7303,6 +7303,18 @@
+ 
+ 	/*
+ 	 * Notes:
++	 * This fix is only for METAPHYUNI MetamechBook
++	 * with AMD Ryzen 7 7840HS and 240Hz eDP-Screen
++	 * which return true to fix this machine cannot turn on eDP screen
++	 * while booting.
++	 */
++
++	if (connector->connector_type == DRM_MODE_CONNECTOR_eDP) {
++		return connector_status_connected;
++	}
++
++	/*
++	 * Notes:
+ 	 * 1. This interface is NOT called in context of HPD irq.
+ 	 * 2. This interface *is called* in context of user-mode ioctl. Which
+ 	 * makes it a bad place for *any* MST-related activity.
